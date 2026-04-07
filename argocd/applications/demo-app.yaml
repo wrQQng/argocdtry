@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/wrQQng/argocdtry.git
     targetRevision: main
-    path: my-chart
+    path: my-chart/
 
     helm:
       # Extra parameters to set (same as setting through values.yaml, but these take precedence)
@@ -38,7 +38,7 @@ spec:
   # Destination cluster and namespace to deploy the application
   destination:
     server: https://kubernetes.default.svc
-    namespace: demo
+    namespace: default
 
   # Sync policy
   syncPolicy:
