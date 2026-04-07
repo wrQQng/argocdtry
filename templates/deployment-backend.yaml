@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  minReadySeconds: 10
+  strategy:              
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1      
+  selector:
+    matchLabels:
+      app: backend      
+  template:
+    metadata:
+      labels:
+        app: backend     
+    spec:                
+      containers:
+      - name: backend
+        image: "{{ .Values.backend.image }}:{{ .Values.backend.tag }}"
+        startupProbe:
+          httpGet:
+            path: {{ .Values.backend.probes.startupProbe.httpGet.path }}
+            port: {{ .Values.backend.probes.startupProbe.httpGet.port }}
+          failureThreshold: {{ .Values.backend.probes.startupProbe.failureThreshold }}
+          periodSeconds: {{ .Values.backend.probes.startupProbe.periodSeconds }}  
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.backend.probes.readinessProbe.httpGet.path }}
+            port: {{ .Values.backend.probes.readinessProbe.httpGet.port }}
+          initialDelaySeconds: {{ .Values.backend.probes.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.backend.probes.readinessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.backend.probes.readinessProbe.failureThreshold }}  
+        resources:
+          requests:
+            memory: "{{ .Values.backend.resources.requests.memory }}"
+            cpu: "{{ .Values.backend.resources.requests.cpu }}"
+          limits:
+            memory: "{{ .Values.backend.resources.limits.memory }}"
+            cpu: "{{ .Values.backend.resources.limits.cpu }}"
+        ports:
+        - containerPort: {{ .Values.backend.containerPort }}

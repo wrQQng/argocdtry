@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: "{{ .Values.frontend.image }}:{{ .Values.frontend.tag }}"
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.frontend.probes.liveness.path }}
+            port: {{ .Values.frontend.probes.liveness.port }}
+          periodSeconds: {{ .Values.frontend.probes.liveness.periodSeconds }}
+          failureThreshold: {{ .Values.frontend.probes.liveness.failureThreshold }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.frontend.probes.readiness.path }}
+            port: {{ .Values.frontend.probes.readiness.port }}
+          periodSeconds: {{ .Values.frontend.probes.readiness.periodSeconds }}
+          failureThreshold: {{ .Values.frontend.probes.readiness.failureThreshold }}
+        resources:
+          requests:
+            memory: {{ .Values.frontend.resources.requests.memory }}
+            cpu: {{ .Values.frontend.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.frontend.resources.limits.memory }}
+            cpu: {{ .Values.frontend.resources.limits.cpu }}
+        ports:
+        - containerPort: 80

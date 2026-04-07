@@ -1,0 +1,64 @@
+backend:
+  image: wrqng/notes-app-backend
+  tag: v1.4
+  containerPort: 3000
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "500m"
+    limits:
+      memory: "256Mi"
+      cpu: "1"
+  probes:
+    startupProbe:
+      httpGet:
+        path: /health
+        port: 3000
+      failureThreshold: 15
+      periodSeconds: 2  
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: 3000
+      initialDelaySeconds: 0
+      periodSeconds: 5
+      failureThreshold: 3
+         
+
+
+frontend:
+  image: wrqng/notes-app-frontend
+  tag: v1.3
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "128Mi"
+      cpu: "500m"
+  probes:
+    liveness:
+      path: /
+      port: 80
+      periodSeconds: 10
+      failureThreshold: 3
+    readiness:
+      path: /
+      port: 80
+      periodSeconds: 5
+      failureThreshold: 3
+
+ingress:
+  host: myapp.local
+  className: nginx
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 5
+  CPUUtilization: 50
+
+postgres:
+  externalIP: 192.168.49.3
+  port: 5432
+
+      
