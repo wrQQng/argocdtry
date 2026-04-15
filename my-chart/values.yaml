@@ -1,6 +1,6 @@
 backend:
   image: wrqng/notes-app-backend
-  tag: 1.4
+  tag: v1.4
   containerPort: 3000
   resources:
     requests:
