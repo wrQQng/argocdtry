@@ -1,6 +1,6 @@
 backend:
   image: wrqng/notes-app-backend
-  tag: 369418fe67625889453568f114ccc52ee01d7440
+  tag: 32ee80ff9d09cc8ba1a9c9ed7feaa502805dce28
   containerPort: 3000
   resources:
     requests:
@@ -15,7 +15,7 @@ backend:
         path: /health
         port: 3000
       failureThreshold: 15
-      periodSeconds: 2  
+      periodSeconds: 2
     readinessProbe:
       httpGet:
         path: /health
@@ -23,9 +23,6 @@ backend:
       initialDelaySeconds: 0
       periodSeconds: 5
       failureThreshold: 3
-         
-
-
 frontend:
   image: wrqng/notes-app-frontend
   tag: v1.3
@@ -47,18 +44,13 @@ frontend:
       port: 80
       periodSeconds: 5
       failureThreshold: 3
-
 ingress:
   host: myapp.local
   className: nginx
-
 hpa:
   minReplicas: 1
   maxReplicas: 5
   CPUUtilization: 50
-
 postgres:
   externalIP: 192.168.49.3
   port: 5432
-
-      
