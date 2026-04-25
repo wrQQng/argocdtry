@@ -1,6 +1,6 @@
 backend:
   image: wrqng/notes-app-backend
-  tag: 32ee80ff9d09cc8ba1a9c9ed7feaa502805dce28
+  tag: c85eb4f3fcebb773a4f58636b910512b9633c6d8
   containerPort: 3000
   resources:
     requests:
@@ -25,7 +25,7 @@ backend:
       failureThreshold: 3
 frontend:
   image: wrqng/notes-app-frontend
-  tag: v1.3
+  tag: c85eb4f3fcebb773a4f58636b910512b9633c6d8
   resources:
     requests:
       memory: "64Mi"
